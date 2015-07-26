@@ -24,12 +24,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import cl.uchile.transubic.calendarEvent.json.CalendarEventJson;
 import cl.uchile.transubic.service.CalendarEventService;
 import cl.uchile.transubic.service.SpringSecurityService;
 import cl.uchile.transubic.service.UserService;
+import cl.uchile.transubic.user.model.User;
 
 @Controller
 public class MainController {
@@ -95,6 +97,27 @@ public class MainController {
 		model.setViewName("login");
 
 		return model;
+
+	}
+
+	@RequestMapping(value = "/getKey", method = { RequestMethod.POST })
+	@ResponseBody
+	public String getKey(
+			@RequestParam(value = "rut", required = false) String rut,
+			@RequestParam(value = "password", required = false) String password,
+			HttpServletRequest request) {
+
+		if (rut != null && password != null) {
+			User user = this.userService.findByUserRut(rut);
+
+			if (user != null
+					&& this.springSecurityService.passwordsMatches(password,
+							user.getPassword())) {
+				return user.getKey();
+			}
+		}
+
+		return "";
 
 	}
 

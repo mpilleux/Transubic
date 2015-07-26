@@ -57,6 +57,14 @@ h4 {
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 		</form:form>
+		
+		<c:url var="getKey" value="/getKey"></c:url>
+		<form:form class="col-xs-3" action="${getKey}" method='POST'>
+			<input class="form-control" type='text' name='rut' placeholder="RUT or ID" onChange="this.value=$.Rut.formatear(this.value.substring(0, this.value.length - 1))+'-'+this.value[this.value.length-1]; "/>
+			<input class="form-control" type='password' name='password' placeholder="Password"/> 
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button> 
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		</form:form>
 
 	</tiles:putAttribute>
 </tiles:insertDefinition>

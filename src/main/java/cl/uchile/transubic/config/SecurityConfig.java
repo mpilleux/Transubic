@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				// .antMatchers("/admin/**").access("hasRole('ROLE_TRAVEL_ASSISTANT')")
 				.antMatchers("/login", "/resources/**", "/webjars/**", "/403",
-						"/user/formCrearUsuario", "/user/crearUsuario")
+						"/user/formCrearUsuario", "/user/crearUsuario", "/getKey")
 				.permitAll().anyRequest().authenticated().and().formLogin()
 				.loginPage("/login").failureUrl("/login?error")
 				.loginProcessingUrl("/login").usernameParameter("rut")
