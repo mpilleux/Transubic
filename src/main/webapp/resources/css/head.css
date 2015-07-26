@@ -1,0 +1,104 @@
+@import url(http://fonts.googleapis.com/css?family=Bree+Serif|Lato);
+
+/*
+ * Global add-ons
+ */
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+.sidebar {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  z-index: 1000;
+  display: block;
+  padding: 0;
+  min-height: 100%;
+  background-color: #354052;
+}
+
+.sidebar-header {
+  display: block;
+  min-height: 51px;
+  background-color: #2f3949;
+}
+.sidebar-header a.sidebar-brand {
+  display: block;
+  color: white;
+  font-size: 1.3em;
+  font-family: "Bree Serif", serif;
+  padding-top: 10px;
+}
+.sidebar-header:hover a.sidebar-brand,
+.sidebar-header:focus a.sidebar-brand {
+  text-decoration: none;
+}
+.nav-sidebar {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.nav-sidebar > .active {
+  border-left: 3px solid #15a4fa;
+}
+.nav-sidebar > li > a {
+  padding-right: 10px;
+  padding-left: 10px;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  color: #a0abbf;
+}
+.nav-sidebar > li > a:hover,
+.nav-sidebar > li > a:focus {
+  color: #fff;
+  background-color: #2f3949;
+}
+.nav-sidebar > .li-header {
+  font-family: "Bree Serif", serif;
+  color: #65748d;
+  padding-top: 20px;
+  padding-left: 10px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #2f3949;
+}
+
+.main {
+  padding: 0 !important;
+}
+.main .container-fluid {
+  padding-left: 35px;
+  padding-right: 35px;
+}
+.navbar-default {
+  background-color: #ecf2f6;	
+}
+.navbar-default .navbar-brand strong {
+  font-size: 1.2em;
+}
+.btn-default {
+  color: #333;
+  font-weight: bold;
+}
+.btn-default:hover {
+  color:white;
+  background-color: #2f3949;
+}
+.btn-inverse {
+  color: white;
+  background-color: #354052;
+}
+.btn-inverse:hover {
+  color: white;
+  background-color: #2f3949;
+}
