@@ -2,7 +2,9 @@ package cl.uchile.transubic.user.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,11 +34,15 @@ public class User {
 	private String email;
 	private boolean enabled;
 
+	private String digit;
+	private String key;
+	private Date keyDate;
+
 	public User() {
 	}
 
-	public User(Integer userId, Date creationDate, String rut,
-			String name, String password, String email, boolean enabled) {
+	public User(Integer userId, Date creationDate, String rut, String name,
+			String password, String email, boolean enabled) {
 		super();
 		this.userId = userId;
 		this.creationDate = creationDate;
@@ -99,7 +105,7 @@ public class User {
 		this.password = password;
 	}
 
-	@Column(name = "USE_EMAIL", nullable = false, length = 256, unique=true)
+	@Column(name = "USE_EMAIL", nullable = false, length = 256, unique = true)
 	@Email
 	@NotNull
 	@Length(min = 4, max = 256)
@@ -119,6 +125,35 @@ public class User {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "USE_KEY_DATE", nullable = false)
+	public Date getKeyDate() {
+		return keyDate;
+	}
+
+	public void setKeyDate(Date keyDate) {
+		this.keyDate = keyDate;
+	}
+	
+	@Column(name = "USE_DIGIT", nullable = false)
+	public String getDigit() {
+		return digit;
+	}
+
+	public void setDigit(String digit) {
+		this.digit = digit;
+	}
+
+	@Column(name = "USE_KEY", nullable = false)
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
 
 	@AssertTrue(message = "Invalid verifying digit in Rut.")
 	@Transient
@@ -148,10 +183,88 @@ public class User {
 
 		return validacion;
 	}
-	
+
 	public void encryptPassword() {
 		PasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		this.setPassword(bCryptPasswordEncoder.encode(this.getPassword()));
+	}
+
+
+	@Transient
+	private String getStringToEncrypt() {
+		return this.getKeyDate().toString() + "" + this.getUserId();
+	}
+
+	@Transient
+	public String generateCode() {
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+		String hashedPassword = passwordEncoder.encode(this
+				.getStringToEncrypt());
+
+		String c = this.getDigit();
+		String textToInsert = this.getUserId() + c + "";
+		hashedPassword = hashedPassword.substring(0, 33) + textToInsert
+				+ hashedPassword.substring(33);
+
+		hashedPassword = encodeHashUrl(hashedPassword);
+
+		return hashedPassword;
+	}
+
+	@Transient
+	public void generateKey() {
+		this.setKey(User.encodeHashUrl(this.generateCode()));
+	}
+
+	@Transient
+	public void generateDigit() {
+		Random r = new Random();
+		char c = (char) (r.nextInt(26) + 'a');
+		this.setDigit(c + "");
+	}
+
+	@Transient
+	public boolean isValidHash(String hash) {
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.getKeyDate());
+		cal.add(Calendar.DAY_OF_YEAR, 1);
+
+		if (cal.getTime().compareTo(new Date()) < 0)
+			return false;
+
+		String subString = hash.substring(33);
+		String integers = "123456789";
+
+		int i;
+		for (i = 0; i < subString.length(); i++) {
+			char c = subString.charAt(i);
+			if (!integers.contains(c + "")) {
+				i++;
+				break;
+			}
+		}
+		hash = hash.substring(0, 33) + subString.substring(i);
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+		return passwordEncoder.matches(this.getStringToEncrypt(), hash);
+	}
+
+	@Transient
+	public static String encodeHashUrl(String hash) {
+		hash = hash.replace('/', '-');
+		hash = hash.replace('.', '_');
+		hash = hash.replace("$2a$10$", "");
+		return hash;
+	}
+
+	@Transient
+	public static String decodeHashUrl(String hash) {
+		hash = "$2a$10$" + hash;
+		hash = hash.replace('-', '/');
+		hash = hash.replace('_', '.');
+		return hash;
 	}
 
 }

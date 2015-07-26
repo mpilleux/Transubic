@@ -52,6 +52,9 @@ public class UserService {
 		user.setCreationDate(new Date());
 		user.setEnabled(true);
 		user.encryptPassword();
+		user.setKeyDate(new Date());
+		user.generateDigit();
+		user.generateKey();
 		this.userDao.addUser(user);
 	}
 
