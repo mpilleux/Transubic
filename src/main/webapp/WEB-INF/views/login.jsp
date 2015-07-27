@@ -59,7 +59,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="<c:url value='/webjars/jquery/1.11.2/jquery.min.js'/>"></script>
+	<script src="<c:url value='/webjars/jquery/2.1.3/jquery.min.js'/>"></script>
 	<script src="<c:url value='/resources/js/jquery.Rut.min.js'/>"></script>
 	<script src="<c:url value='/webjars/bootstrap/3.3.2-1/js/bootstrap.min.js'/>"></script>
 </body>
