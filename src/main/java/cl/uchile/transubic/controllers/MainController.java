@@ -100,12 +100,15 @@ public class MainController {
 
 	}
 
-	@RequestMapping(value = "/getKey", method = { RequestMethod.POST })
+	@RequestMapping(value = "/getKey", method = { RequestMethod.GET })
 	@ResponseBody
 	public String getKey(
 			@RequestParam(value = "rut", required = false) String rut,
 			@RequestParam(value = "password", required = false) String password,
 			HttpServletRequest request) {
+		
+		System.out.println("rut " + rut);
+		System.out.println("password " + password);
 
 		if (rut != null && password != null) {
 			User user = this.userService.findByUserRut(rut);

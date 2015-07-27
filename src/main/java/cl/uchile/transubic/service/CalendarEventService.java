@@ -1,6 +1,7 @@
 package cl.uchile.transubic.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,16 @@ public class CalendarEventService {
 			return new ArrayList<CalendarEvent>();
 
 		return this.calendarEventDao.getAllCalendarEventsByUserId(userId);
+	}
+
+	@Transactional
+	public List<CalendarEvent> getCalendarEventsByUserIdAndDate(Integer userId,
+			Date date) {
+		if (userId == null || date == null)
+			return new ArrayList<CalendarEvent>();
+
+		return this.calendarEventDao.getCalendarEventsByUserIdAndDate(userId,
+				date);
 	}
 
 	@Transactional

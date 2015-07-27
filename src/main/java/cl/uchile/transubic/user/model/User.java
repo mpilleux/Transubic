@@ -2,7 +2,6 @@ package cl.uchile.transubic.user.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -135,7 +134,7 @@ public class User {
 	public void setKeyDate(Date keyDate) {
 		this.keyDate = keyDate;
 	}
-	
+
 	@Column(name = "USE_DIGIT", nullable = false)
 	public String getDigit() {
 		return digit;
@@ -153,7 +152,6 @@ public class User {
 	public void setKey(String key) {
 		this.key = key;
 	}
-
 
 	@AssertTrue(message = "Invalid verifying digit in Rut.")
 	@Transient
@@ -189,7 +187,6 @@ public class User {
 		this.setPassword(bCryptPasswordEncoder.encode(this.getPassword()));
 	}
 
-
 	@Transient
 	private String getStringToEncrypt() {
 		return this.getKeyDate().toString() + "" + this.getUserId();
@@ -214,7 +211,7 @@ public class User {
 
 	@Transient
 	public void generateKey() {
-		this.setKey(User.encodeHashUrl(this.generateCode()));
+		this.setKey(this.generateCode());
 	}
 
 	@Transient
@@ -226,29 +223,20 @@ public class User {
 
 	@Transient
 	public boolean isValidHash(String hash) {
+		// FIX METHOD
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.getKeyDate());
-		cal.add(Calendar.DAY_OF_YEAR, 1);
+		return User.encodeHashUrl(hash).equals(this.getKey());
 
-		if (cal.getTime().compareTo(new Date()) < 0)
-			return false;
-
-		String subString = hash.substring(33);
-		String integers = "123456789";
-
-		int i;
-		for (i = 0; i < subString.length(); i++) {
-			char c = subString.charAt(i);
-			if (!integers.contains(c + "")) {
-				i++;
-				break;
-			}
-		}
-		hash = hash.substring(0, 33) + subString.substring(i);
-		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-		return passwordEncoder.matches(this.getStringToEncrypt(), hash);
+		/*
+		 * String subString = hash.substring(33); String integers = "123456789";
+		 * 
+		 * int i; for (i = 0; i < subString.length(); i++) { char c =
+		 * subString.charAt(i); if (!integers.contains(c + "")) { i++; break; }
+		 * } hash = hash.substring(0, 33) + subString.substring(i);
+		 * PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		 * 
+		 * return passwordEncoder.matches(this.getStringToEncrypt(), hash);
+		 */
 	}
 
 	@Transient

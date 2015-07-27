@@ -1,6 +1,9 @@
 package cl.uchile.transubic.controllers;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -9,16 +12,20 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cl.uchile.transubic.calendarEvent.form.AgregarEventoForm;
 import cl.uchile.transubic.calendarEvent.form.ModificarEventoForm;
+import cl.uchile.transubic.calendarEvent.json.CalendarEventJson;
 import cl.uchile.transubic.calendarEvent.model.CalendarEvent;
 import cl.uchile.transubic.service.CalendarEventService;
 import cl.uchile.transubic.service.SpringSecurityService;
 import cl.uchile.transubic.service.UserService;
+import cl.uchile.transubic.user.model.User;
 
 @Controller
 @RequestMapping(value = { "/calendar" })
@@ -78,8 +85,7 @@ public class CalendarController {
 
 	@RequestMapping(value = { "/formEditarEvento" }, method = RequestMethod.POST)
 	public String editEventoForm(Model model,
-			ModificarEventoForm modificarEventoForm,
-			BindingResult bindingResult) {
+			ModificarEventoForm modificarEventoForm, BindingResult bindingResult) {
 
 		CalendarEvent calendarEvent = this.calendarEventService
 				.findByCalendarEventId(modificarEventoForm.getId());
@@ -132,8 +138,7 @@ public class CalendarController {
 
 	@RequestMapping(value = { "/formEliminarEvento" }, method = RequestMethod.POST)
 	public String deleteEventoForm(Model model,
-			ModificarEventoForm modificarEventoForm,
-			BindingResult bindingResult) {
+			ModificarEventoForm modificarEventoForm, BindingResult bindingResult) {
 
 		CalendarEvent calendarEvent = this.calendarEventService
 				.findByCalendarEventId(modificarEventoForm.getId());
@@ -178,5 +183,29 @@ public class CalendarController {
 				"Evento eliminado exitosamente.");
 
 		return "redirect:/";
+	}
+
+	@RequestMapping(value = { "/getTodaysCalendarEventsForUser/{key}" }, method = RequestMethod.GET)
+	@ResponseBody
+	public List<CalendarEventJson> getAllCalendarEvents(
+			@PathVariable("key") String key) {
+
+		key = User.decodeHashUrl(key);
+		Integer userId = this.userService.getUserIdFromHash(key);
+
+		if (userId <= 0)
+			return new ArrayList<CalendarEventJson>();
+
+		User user = this.userService.findByUserId(userId);
+
+		if (user == null || !user.isValidHash(key))
+			return new ArrayList<CalendarEventJson>();
+
+		List<CalendarEventJson> calendarEvents = this.calendarEventService
+				.convertCalendarEventsToJson(this.calendarEventService
+						.getCalendarEventsByUserIdAndDate(userId, new Date()));
+
+		return calendarEvents;
+
 	}
 }

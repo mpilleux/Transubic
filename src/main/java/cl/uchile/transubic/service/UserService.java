@@ -23,8 +23,8 @@ public class UserService {
 	}
 
 	@Transactional
-	public User findByUserId(Integer employee_id) {
-		return this.userDao.findByUserId(employee_id);
+	public User findByUserId(Integer userId) {
+		return this.userDao.findByUserId(userId);
 	}
 
 	@Transactional
@@ -56,6 +56,8 @@ public class UserService {
 		user.generateDigit();
 		user.generateKey();
 		this.userDao.addUser(user);
+		user.generateKey();
+		this.updateUser(user);
 	}
 
 	@Transactional
@@ -67,5 +69,30 @@ public class UserService {
 	public void deleteUser(User user) {
 		user.setEnabled(false);
 		this.updateUser(user);
+	}
+	
+	@Transactional
+	public Integer getUserIdFromHash(String hash) {
+		
+		if( hash.length() < 60 )
+			return 0;
+		
+		String subString = hash.substring(33);
+		String integers = "123456789";
+		String id = "";
+		
+		for( int i = 0; i < subString.length(); i++) {
+			char c = subString.charAt(i);
+			
+			if( !integers.contains(c+"") )
+				break;
+			
+			id += c;
+		}
+		
+		if( id.length() > 0 )
+			return Integer.parseInt(id);
+		
+		return 0;
 	}
 }

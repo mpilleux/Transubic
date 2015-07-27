@@ -10,6 +10,7 @@ public class CalendarEventJson {
 	private Integer id;
 	private String title;
 	private String start;// : '2015-02-16T16:00:00'
+	private String time;
 	private String location;
 
 	public CalendarEventJson() {
@@ -20,11 +21,15 @@ public class CalendarEventJson {
 		this.setTitle(calendarEvent.getTitle());
 		this.setLocation(calendarEvent.getLocation());
 		
+		
 		String date = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(calendarEvent
 				.getEventDate());
 		date+="T";
-		date+=new SimpleDateFormat("HH:mm:ss", Locale.US).format(calendarEvent
+		String time = new SimpleDateFormat("HH:mm:ss", Locale.US).format(calendarEvent
 				.getEventTime());
+		date+=time;
+		
+		this.setTime(time);
 		this.setStart(date);
 	}
 
@@ -58,6 +63,14 @@ public class CalendarEventJson {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
 	}
 
 }

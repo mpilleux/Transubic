@@ -37,7 +37,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
@@ -140,21 +140,31 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.9</version>
 		</dependency>
-		
+
 		<!-- Jackson JSON Mapper -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.1.2</version>
+		</dependency>
+
 		<!-- JavaMail -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
 		</dependency>
-		
+
 		<!-- JavaMail Dependency for manage MIME data -->
 		<dependency>
 			<groupId>javax.activation</groupId>
@@ -269,14 +279,14 @@
 			<version>1.10.4</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.webjars</groupId>
-		    <artifactId>datatables-tools</artifactId>
-		    <version>2.2.4-1</version>
+			<groupId>org.webjars</groupId>
+			<artifactId>datatables-tools</artifactId>
+			<version>2.2.4-1</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.webjars</groupId>
-		    <artifactId>bootbox</artifactId>
-		    <version>4.3.0-1</version>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootbox</artifactId>
+			<version>4.3.0-1</version>
 		</dependency>
 
 		<!-- Test -->

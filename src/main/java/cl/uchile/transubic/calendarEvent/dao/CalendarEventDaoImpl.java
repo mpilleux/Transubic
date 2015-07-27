@@ -1,6 +1,7 @@
 package cl.uchile.transubic.calendarEvent.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -40,8 +41,25 @@ public class CalendarEventDaoImpl implements CalendarEventDao {
 		List<CalendarEvent> calendarEvents = new ArrayList<CalendarEvent>();
 
 		calendarEvents = sessionFactory.getCurrentSession()
-				.createQuery("from CalendarEvent where userId=?")
-				.setParameter(0, userId).list();
+				.createQuery("from CalendarEvent where userId= :userId")
+				.setParameter("userId", userId).list();
+
+		return calendarEvents;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CalendarEvent> getCalendarEventsByUserIdAndDate(Integer userId,
+			Date date) {
+		List<CalendarEvent> calendarEvents = new ArrayList<CalendarEvent>();
+
+		calendarEvents = sessionFactory
+				.getCurrentSession()
+				.createQuery(
+						"from CalendarEvent where userId= :userId "
+								+ "and eventDate = :eventDate")
+				.setParameter("userId", userId).setParameter("eventDate", date)
+				.list();
 
 		return calendarEvents;
 	}
