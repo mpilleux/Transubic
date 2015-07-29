@@ -45,6 +45,30 @@ public class CalendarEventService {
 	}
 
 	@Transactional
+	/**
+	 * 
+	 * @param userId
+	 * @param date
+	 * @return the next event in date, but filting events that have already passed
+	 */
+	public CalendarEvent getNextCalendarEventsByUserIdAndDate(Integer userId,
+			Date date) {
+		List<CalendarEvent> calendarEventList = this
+				.getCalendarEventsByUserIdAndDate(userId, date);
+		CalendarEvent calendarEventResult = null;
+
+		for (CalendarEvent calendarEvent : calendarEventList) {
+			if (calendarEvent.getEventDateTime().compareTo(date) >= 0) {
+				calendarEventResult = calendarEvent;
+				break;
+			}
+		}
+
+		return calendarEventResult;
+
+	}
+
+	@Transactional
 	public List<CalendarEventJson> convertCalendarEventsToJson(
 			List<CalendarEvent> calendarEventList) {
 		List<CalendarEventJson> calendarEventJsonList = new ArrayList<CalendarEventJson>();

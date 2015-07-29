@@ -70,29 +70,46 @@ public class UserService {
 		user.setEnabled(false);
 		this.updateUser(user);
 	}
-	
+
 	@Transactional
 	public Integer getUserIdFromHash(String hash) {
-		
-		if( hash.length() < 60 )
+
+		if (hash.length() < 60)
 			return 0;
-		
+
 		String subString = hash.substring(33);
 		String integers = "123456789";
 		String id = "";
-		
-		for( int i = 0; i < subString.length(); i++) {
+
+		for (int i = 0; i < subString.length(); i++) {
 			char c = subString.charAt(i);
-			
-			if( !integers.contains(c+"") )
+
+			if (!integers.contains(c + ""))
 				break;
-			
+
 			id += c;
 		}
-		
-		if( id.length() > 0 )
+
+		if (id.length() > 0)
 			return Integer.parseInt(id);
-		
+
 		return 0;
 	}
+
+	@Transactional
+	public User getUserByEncodedKey(String encodedKey) {
+		encodedKey = User.decodeHashUrl(encodedKey);
+		Integer userId = this.getUserIdFromHash(encodedKey);
+
+		if (userId <= 0)
+			return null;
+
+		User user = this.findByUserId(userId);
+		
+		if (user == null || !user.isValidHash(encodedKey))
+			return null;
+		
+		return user;
+	}
+
 }

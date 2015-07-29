@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -77,7 +78,7 @@ public class CalendarEvent {
 		this.eventTime = eventTime;
 
 		if (this.getEventTimeString() == null) {
-			this.eventTimeString = new SimpleDateFormat("hh:mm", Locale.US)
+			this.eventTimeString = new SimpleDateFormat("HH:mm", Locale.US)
 					.format(this.getEventTime());
 		}
 	}
@@ -158,6 +159,25 @@ public class CalendarEvent {
 		SimpleDateFormat formatter = new SimpleDateFormat(expectedPattern);
 		Date time = formatter.parse(eventTimeString);
 		this.setEventTime(time);
+	}
+
+	@Transient
+	public Date getEventDateTime() {
+
+		Calendar calendarDate = Calendar.getInstance();
+		calendarDate.setTime(this.getEventDate());
+
+		Calendar calendarTime = Calendar.getInstance();
+		calendarTime.setTime(this.getEventTime());
+
+		calendarDate.set(Calendar.HOUR_OF_DAY,
+				calendarTime.get(Calendar.HOUR_OF_DAY));
+		calendarDate.set(Calendar.MINUTE, calendarTime.get(Calendar.MINUTE));
+		calendarDate.set(Calendar.SECOND, calendarTime.get(Calendar.SECOND));
+		calendarDate.set(Calendar.MILLISECOND,
+				calendarTime.get(Calendar.MILLISECOND));
+
+		return calendarDate.getTime();
 	}
 
 }

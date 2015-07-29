@@ -42,7 +42,7 @@ h4 {
 				<form:errors path="eventTimeString" />
 			</div>
 			<div class="form-group">
-				<label>Hubicación</label>
+				<label>Ubicación</label>
 				<form:input path="location" class="form-control"/>
 				<form:errors path="location" />
 			</div>

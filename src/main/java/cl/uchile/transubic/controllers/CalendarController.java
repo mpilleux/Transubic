@@ -187,23 +187,17 @@ public class CalendarController {
 
 	@RequestMapping(value = { "/getTodaysCalendarEventsForUser/{key}" }, method = RequestMethod.GET)
 	@ResponseBody
-	public List<CalendarEventJson> getAllCalendarEvents(
+	public List<CalendarEventJson> getTodaysCalendarEventsForUser(
 			@PathVariable("key") String key) {
 
-		key = User.decodeHashUrl(key);
-		Integer userId = this.userService.getUserIdFromHash(key);
+		User user = this.userService.getUserByEncodedKey(key);
 
-		if (userId <= 0)
-			return new ArrayList<CalendarEventJson>();
-
-		User user = this.userService.findByUserId(userId);
-
-		if (user == null || !user.isValidHash(key))
+		if (user == null)
 			return new ArrayList<CalendarEventJson>();
 
 		List<CalendarEventJson> calendarEvents = this.calendarEventService
 				.convertCalendarEventsToJson(this.calendarEventService
-						.getCalendarEventsByUserIdAndDate(userId, new Date()));
+						.getCalendarEventsByUserIdAndDate(user.getUserId(), new Date()));
 
 		return calendarEvents;
 

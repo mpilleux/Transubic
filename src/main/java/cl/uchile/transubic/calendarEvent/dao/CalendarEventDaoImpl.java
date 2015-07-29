@@ -57,7 +57,8 @@ public class CalendarEventDaoImpl implements CalendarEventDao {
 				.getCurrentSession()
 				.createQuery(
 						"from CalendarEvent where userId= :userId "
-								+ "and eventDate = :eventDate")
+								+ "and eventDate = :eventDate "
+								+ "order by eventTime")
 				.setParameter("userId", userId).setParameter("eventDate", date)
 				.list();
 
