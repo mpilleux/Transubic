@@ -17,6 +17,9 @@ public class CalendarEventJson {
 	}
 
 	public CalendarEventJson(CalendarEvent calendarEvent) {
+		if( calendarEvent == null )
+			return;
+		
 		this.setId(calendarEvent.getEventId());
 		this.setTitle(calendarEvent.getTitle());
 		this.setLocation(calendarEvent.getLocation());

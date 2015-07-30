@@ -86,7 +86,7 @@ public class DirectionController {
 				throw new Exception();
 
 		} catch (Exception e) {
-			return "No route available.";
+			return "No";
 		}
 
 		DateTime routDepartureTime = routes[0].legs[0].departureTime;

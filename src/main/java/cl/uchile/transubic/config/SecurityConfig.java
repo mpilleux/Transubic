@@ -36,8 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// .antMatchers("/admin/**").access("hasRole('ROLE_TRAVEL_ASSISTANT')")
 				.antMatchers("/login", "/resources/**", "/webjars/**", "/403",
 						"/user/formCrearUsuario", "/user/crearUsuario",
-						"/getKey", "/direction/getMap/**",
-						"/calendar/getTodaysCalendarEventsForUser/**", "/direction/getSteps/**")
+						"/getKey", "/calendar/getNextCalendarEventsForUser/**",
+						"/calendar/getTodaysCalendarEventsForUser/**",
+						"/direction/getMap/**", "/direction/getSteps/**")
 				.permitAll().anyRequest().authenticated().and().formLogin()
 				.loginPage("/login").failureUrl("/login?error")
 				.loginProcessingUrl("/login").usernameParameter("rut")

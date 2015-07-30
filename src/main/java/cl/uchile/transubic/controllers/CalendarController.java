@@ -202,4 +202,22 @@ public class CalendarController {
 		return calendarEvents;
 
 	}
+	
+	@RequestMapping(value = { "/getNextCalendarEventsForUser/{key}" }, method = RequestMethod.GET)
+	@ResponseBody
+	public CalendarEventJson getNextCalendarEventsForUser(
+			@PathVariable("key") String key) {
+
+		User user = this.userService.getUserByEncodedKey(key);
+
+		if (user == null)
+			return new CalendarEventJson();
+
+		CalendarEvent calendarEvent = this.calendarEventService
+				.getNextCalendarEventsByUserIdAndDate(user,
+						new Date());
+
+		return new CalendarEventJson(calendarEvent);
+
+	}
 }
