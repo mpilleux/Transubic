@@ -197,7 +197,7 @@ public class CalendarController {
 
 		List<CalendarEventJson> calendarEvents = this.calendarEventService
 				.convertCalendarEventsToJson(this.calendarEventService
-						.getCalendarEventsByUserIdAndDate(user.getUserId(), new Date()));
+						.getCalendarEventsByUserIdAndDate(user, new Date()));
 
 		return calendarEvents;
 

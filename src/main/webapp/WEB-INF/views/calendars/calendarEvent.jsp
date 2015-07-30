@@ -22,6 +22,9 @@ h4 {
 	font-weight: 600;
 }
 </style>
+		<script
+			src="https://maps.googleapis.com/maps/api/js?sensor=true&libraries=places,geometry&language=es&region=CL"></script>
+
 
 		<h3>Evento de calendario</h3>
 
@@ -33,7 +36,7 @@ h4 {
 
 			<div class="form-group">
 				<label>Título</label>
-				<form:input path="title" class="form-control"/>
+				<form:input path="title" class="form-control" />
 				<form:errors path="title" />
 			</div>
 			<div class="form-group">
@@ -43,18 +46,34 @@ h4 {
 			</div>
 			<div class="form-group">
 				<label>Ubicación</label>
-				<form:input path="location" class="form-control"/>
+				<form:input path="location" class="form-control" />
 				<form:errors path="location" />
 			</div>
 			<input class="btn btn-primary" type="submit" value="Guardar" />
-			
-			<form:hidden path="eventId"/>
-			<form:hidden path="eventDateString"/>
-			<form:hidden path="userId"/>
-			
+
+			<form:hidden path="eventId" />
+			<form:hidden path="eventDateString" />
+			<form:hidden path="userId" />
+
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 		</form:form>
 
+		<script>
+			var input = document.getElementById('location');
+			var autocompleteOptions = {
+				componentRestrictions : {
+					country : 'cl'
+				},
+				bounds : new google.maps.LatLngBounds(new google.maps.LatLng(
+						-32.930318, -71.175385), new google.maps.LatLng(
+						-33.941081, -70.093231))
+			}
+
+			var autocomplete = new google.maps.places.Autocomplete(input, autocompleteOptions);
+		</script>
+
 	</tiles:putAttribute>
 </tiles:insertDefinition>
+
+

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import cl.uchile.transubic.calendarEvent.dao.CalendarEventDao;
 import cl.uchile.transubic.calendarEvent.json.CalendarEventJson;
 import cl.uchile.transubic.calendarEvent.model.CalendarEvent;
+import cl.uchile.transubic.user.model.User;
 
 @Service("calendarEventService")
 public class CalendarEventService {
@@ -35,13 +36,13 @@ public class CalendarEventService {
 	}
 
 	@Transactional
-	public List<CalendarEvent> getCalendarEventsByUserIdAndDate(Integer userId,
+	public List<CalendarEvent> getCalendarEventsByUserIdAndDate(User user,
 			Date date) {
-		if (userId == null || date == null)
+		if (user == null || user.getUserId() == null || date == null)
 			return new ArrayList<CalendarEvent>();
 
-		return this.calendarEventDao.getCalendarEventsByUserIdAndDate(userId,
-				date);
+		return this.calendarEventDao.getCalendarEventsByUserIdAndDate(
+				user.getUserId(), date);
 	}
 
 	@Transactional
@@ -51,10 +52,10 @@ public class CalendarEventService {
 	 * @param date
 	 * @return the next event in date, but filting events that have already passed
 	 */
-	public CalendarEvent getNextCalendarEventsByUserIdAndDate(Integer userId,
+	public CalendarEvent getNextCalendarEventsByUserIdAndDate(User user,
 			Date date) {
 		List<CalendarEvent> calendarEventList = this
-				.getCalendarEventsByUserIdAndDate(userId, date);
+				.getCalendarEventsByUserIdAndDate(user, date);
 		CalendarEvent calendarEventResult = null;
 
 		for (CalendarEvent calendarEvent : calendarEventList) {
