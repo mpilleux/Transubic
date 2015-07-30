@@ -32,8 +32,8 @@ html, body, #map-canvas {
 	var destination = "${destination}";
 	var arrivalTime = new Date(${arrivalTime});
 	var travelMode = ${travelMode};
-	arrivalTime.setHours(arrivalTime.getHours() - 1);
-	arrivalTime.setMinutes(arrivalTime.getMinutes() - 5);
+	arrivalTime.setHours(arrivalTime.getHours() - 1);//por alguna razón las rutas vienen con 1 hora de atraso
+	arrivalTime.setMinutes(arrivalTime.getMinutes() - 5);//para que llegue 5 min antes
 	
 	function initialize() {
 		var santiago = new google.maps.LatLng(-33.43783, -70.65045);
