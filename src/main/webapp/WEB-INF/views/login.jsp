@@ -14,7 +14,7 @@
 	
 	<style>
 	body {
-		background: url( '<c:url value="/resources/img/cosmos.jpg"/>' ) no-repeat center center fixed;
+		background: url( '<c:url value="/resources/img/city.jpg"/>' ) repeat center center fixed;
 	}
 	</style>
 </head>
