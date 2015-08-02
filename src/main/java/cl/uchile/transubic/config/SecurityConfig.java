@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						"/user/formCrearUsuario", "/user/crearUsuario",
 						"/getKey", "/calendar/getNextCalendarEventsForUser/**",
 						"/calendar/getTodaysCalendarEventsForUser/**",
-						"/direction/getMap/**", "/direction/getSteps/**")
+						"/direction/getMap/**", "/direction/requiresMap/**", "/direction/getSteps/**")
 				.permitAll().anyRequest().authenticated().and().formLogin()
 				.loginPage("/login").failureUrl("/login?error")
 				.loginProcessingUrl("/login").usernameParameter("rut")

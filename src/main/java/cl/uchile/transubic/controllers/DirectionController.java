@@ -22,10 +22,10 @@ import cl.uchile.transubic.calendarEvent.model.CalendarEvent;
 import cl.uchile.transubic.service.CalendarEventService;
 import cl.uchile.transubic.service.GoogleMapsService;
 import cl.uchile.transubic.service.UserService;
+import cl.uchile.transubic.simpleStep.SimpleStep;
 import cl.uchile.transubic.user.model.User;
 
 import com.google.maps.model.DirectionsRoute;
-import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.LatLng;
 
 @Controller
@@ -43,8 +43,6 @@ public class DirectionController {
 	@Autowired
 	@Qualifier("googleMapsService")
 	private GoogleMapsService googleMapsService;
-
-	
 
 	@RequestMapping(value = { "/getMap/{key}" }, method = RequestMethod.GET)
 	public String getMap(@PathVariable("key") String key,
@@ -103,7 +101,7 @@ public class DirectionController {
 
 	@RequestMapping(value = { "/getSteps/{key}" }, method = RequestMethod.GET)
 	@ResponseBody
-	public DirectionsStep[] getSteps(@PathVariable("key") String key,
+	public SimpleStep[] getSteps(@PathVariable("key") String key,
 			@RequestParam(value = "lat") Double lat,
 			@RequestParam(value = "lng") Double lng, Model model) {
 
@@ -121,7 +119,12 @@ public class DirectionController {
 			return null;
 		}
 
-		return routes[0].legs[0].steps;
+		SimpleStep[] simpleSteps = new SimpleStep[routes[0].legs[0].steps.length];
+		for (int i = 0; i < routes[0].legs[0].steps.length; i++) {
+			simpleSteps[i] = new SimpleStep(routes[0].legs[0].steps[i]);
+		}
+
+		return simpleSteps;
 	}
 
 	@RequestMapping(value = { "/json/{key}" }, method = RequestMethod.GET)
@@ -159,7 +162,7 @@ public class DirectionController {
 
 		return "directions/mapa";
 	}
-	
+
 	@RequestMapping(value = { "/{key}" }, method = RequestMethod.GET)
 	@ResponseBody
 	@Deprecated
