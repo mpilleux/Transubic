@@ -31,7 +31,7 @@ html, body, #map-canvas {
 	var origin = new google.maps.LatLng(${origin});
 	var destination = "${destination}";
 	var arrivalTime = new Date(${arrivalTime});
-	var currentTime = new Date();
+	var currentTime = new Date(${currentTime});
 	var travelMode = ${travelMode};
 
 	currentTime.setHours(currentTime.getHours() - 1);//por alguna razón las rutas vienen con 1 hora de atraso

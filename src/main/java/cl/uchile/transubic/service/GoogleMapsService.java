@@ -69,7 +69,7 @@ public class GoogleMapsService {
 
 	public Boolean routeRequiresDepartureTime(DirectionsRoute[] routes) {
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MINUTE, -5);
+		cal.add(Calendar.MINUTE, -15);
 		DateTime now = new DateTime(cal.getTime());
 
 		if (routes.length > 0 && routes[0].legs.length > 0)

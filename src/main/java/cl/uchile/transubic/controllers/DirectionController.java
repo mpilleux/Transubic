@@ -73,6 +73,7 @@ public class DirectionController {
 				.getTime());
 		model.addAttribute("travelMode", travelMode);
 		model.addAttribute("departureTimeBool", false);
+		model.addAttribute("currentTime", new Date().getTime());
 
 		DirectionsRoute[] routes = null;
 		try {
