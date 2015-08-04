@@ -45,9 +45,12 @@ public class DirectionController {
 	private GoogleMapsService googleMapsService;
 
 	@RequestMapping(value = { "/getMap/{key}" }, method = RequestMethod.GET)
-	public String getMap(@PathVariable("key") String key,
+	public String getMap(
+			@PathVariable("key") String key,
 			@RequestParam(value = "lat") Double lat,
-			@RequestParam(value = "lng") Double lng, Model model) {
+			@RequestParam(value = "lng") Double lng,
+			@RequestParam(value = "drive", defaultValue = "false") Boolean drive,
+			Model model) {
 
 		User user = this.userService.getUserByEncodedKey(key);
 		CalendarEvent calendarEvent = this.calendarEventService
@@ -56,15 +59,36 @@ public class DirectionController {
 		if (calendarEvent == null)
 			return "redirect:/";
 
+		String travelMode = "google.maps.DirectionsTravelMode.TRANSIT";
+		if (drive)
+			travelMode = "google.maps.DirectionsTravelMode.DRIVING";
+		
+		
+
 		model.addAttribute("region", "CL");
 		model.addAttribute("language", "es");
 		model.addAttribute("origin", new LatLng(lat, lng));
 		model.addAttribute("destination", calendarEvent.getLocation());
 		model.addAttribute("arrivalTime", calendarEvent.getEventDateTime()
 				.getTime());
-		model.addAttribute("travelMode",
-				"google.maps.DirectionsTravelMode.TRANSIT");
+		model.addAttribute("travelMode", travelMode);
+		model.addAttribute("departureTimeBool", false);
 
+		DirectionsRoute[] routes = null;
+		try {
+			routes = this.googleMapsService.getNextCalendarEventRoute(lat, lng,
+					key);
+
+			if (routes.length <= 0 || routes[0].legs.length <= 0)
+				throw new Exception();
+			
+			if(  this.googleMapsService.routeRequiresDepartureTime(routes) )
+				model.addAttribute("departureTimeBool", true);
+
+		} catch (Exception e) {
+			return "directions/mapa";
+		}
+		
 		return "directions/mapa";
 	}
 

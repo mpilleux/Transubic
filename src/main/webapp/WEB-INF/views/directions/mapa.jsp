@@ -31,9 +31,13 @@ html, body, #map-canvas {
 	var origin = new google.maps.LatLng(${origin});
 	var destination = "${destination}";
 	var arrivalTime = new Date(${arrivalTime});
+	var currentTime = new Date();
 	var travelMode = ${travelMode};
+
+	currentTime.setHours(currentTime.getHours() - 1);//por alguna razón las rutas vienen con 1 hora de atraso
 	arrivalTime.setHours(arrivalTime.getHours() - 1);//por alguna razón las rutas vienen con 1 hora de atraso
 	arrivalTime.setMinutes(arrivalTime.getMinutes() - 5);//para que llegue 5 min antes
+	
 	
 	function initialize() {
 		var santiago = new google.maps.LatLng(-33.43783, -70.65045);
@@ -54,10 +58,17 @@ html, body, #map-canvas {
 		provideRouteAlternatives: false,
 		region: region,
 		transitOptions: {
-			 arrivalTime: arrivalTime
+			<c:if test="${!departureTimeBool}">
+				arrivalTime: arrivalTime
+			</c:if>
+			<c:if test="${departureTimeBool}">
+				departureTime: currentTime
+			</c:if>
+			 
 		}
 		
 	};
+
 
 	function calcRoute() {
 
