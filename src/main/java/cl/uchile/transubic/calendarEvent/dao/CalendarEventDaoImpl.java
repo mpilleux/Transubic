@@ -22,14 +22,14 @@ public class CalendarEventDaoImpl implements CalendarEventDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public CalendarEvent findByCalendarEventId(Integer eventId) {
-		List<CalendarEvent> users = new ArrayList<CalendarEvent>();
+		List<CalendarEvent> calendarEvents = new ArrayList<CalendarEvent>();
 
-		users = sessionFactory.getCurrentSession()
-				.createQuery("from CalendarEvent where eventId=?")
-				.setParameter(0, eventId).list();
+		calendarEvents = sessionFactory.getCurrentSession()
+				.createQuery("from CalendarEvent where eventId=:eventId")
+				.setParameter("eventId", eventId).list();
 
-		if (users.size() > 0) {
-			return users.get(0);
+		if (calendarEvents.size() > 0) {
+			return calendarEvents.get(0);
 		} else {
 			return null;
 		}

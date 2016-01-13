@@ -25,13 +25,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public SessionFactory sessionFactoryTransubic() {
-		LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(
-				dataSourceTransubic());
-		
-		builder.scanPackages("cl.uchile.transubic.user.model")
-				.addProperties(getHibernateProperties(false));
-		builder.scanPackages("cl.uchile.transubic.calendarEvent.model")
-		.addProperties(getHibernateProperties(false));
+		LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSourceTransubic());
+
+		builder.scanPackages("cl.uchile.transubic.user.model").addProperties(getHibernateProperties(false));
+		builder.scanPackages("cl.uchile.transubic.calendarEvent.model").addProperties(getHibernateProperties(false));
+		builder.scanPackages("cl.uchile.transubic.claseEjemplo.model").addProperties(getHibernateProperties(false));
 
 		return builder.buildSessionFactory();
 	}
@@ -61,7 +59,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/webjars/**").addResourceLocations(
-				"classpath:/META-INF/resources/webjars/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 }
